@@ -2,6 +2,7 @@ package com.example.ComUnity.Domain;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
 
@@ -25,6 +26,7 @@ public class Post {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "community_name", nullable = false)
+    @EqualsAndHashCode.Exclude
     private final Community community;
 
     public Post(Member member, Community community)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <title>Home</title>
+</head>
+<body>
+<h1>Hello, <span sec:authentication="principal.username"/></h1>
+<hr/>
+<br/>
+
+<h1 th:text="${community.name}"></h1>
+<h2 th:text="${community.description}"></h2>
+<hr/><br>
+
+<h2>Posts: </h2>
+<div th:each="post : ${posts}">
+  <h3 th:text="${post.title}">Title</h3>
+  <h5 th:text="${post.content}">Content</h5>
+  <h5>Posted by /mem/<span th:text="${post.author.username}"/></h5>
+  <br/><hr/>
+</div>
+
+<br><hr/>
+
+<form th:action="@{/logout}" method="POST">
+  <input type="submit" value="Logout">
+</form>
+</body>
+</html>

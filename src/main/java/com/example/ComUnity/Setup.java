@@ -2,6 +2,7 @@ package com.example.ComUnity;
 
 import com.example.ComUnity.Dao.CommunityDao;
 import com.example.ComUnity.Dao.MemberDao;
+import com.example.ComUnity.Dao.PostDao;
 import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Domain.Post;
@@ -21,6 +22,9 @@ public class Setup {
 
     @Autowired
     CommunityDao communityDao;
+
+    @Autowired
+    PostDao postDao;
 
 
     public void saveMembers(PasswordEncoder passwordEncoder)
@@ -60,6 +64,9 @@ public class Setup {
         for(Community community : communities){
             communityDao.save(community);
         }
+
+        for(Post post : posts)
+            postDao.save(post);
 
     }
 }

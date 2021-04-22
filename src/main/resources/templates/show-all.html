@@ -13,6 +13,11 @@
   <h1>Password: <span th:text="${member.password}"/></h1>
   <h3>Bio: <span th:text="${member.email}"/> </h3>
 </div>
-<a th:href="@{/logout}">Logout</a>
+<form th:action="@{/}" method="POST">
+  <input type="submit" value="Home">
+</form>
+<form th:action="@{/logout}" method="POST">
+  <input type="submit" value="Logout">
+</form>
 </body>
 </html>

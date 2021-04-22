@@ -26,7 +26,7 @@ public class Community {
 
     public enum Type {PUBLIC, INVITE_ONLY};
 
-    @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
     Set<Post> posts = new HashSet<>();
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)

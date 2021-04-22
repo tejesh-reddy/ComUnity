@@ -5,14 +5,22 @@
     <title>Home</title>
 </head>
 <body>
+<h1>Communities at present:</h1>
 <hr/>
 <br/>
 
 <div th:each="community : ${communities}">
-    <h1>Name: <span th:text="${community.name}"/></h1>
-    <h1>Description: <span th:text="${community.description}"/></h1>
-    <h1>Type: <span th:text="${community.type}"/></h1>
+    <h3>Name: <span th:text="${community.name}"/></h3>
+    <h4>Description: <span th:text="${community.description}"/></h4>
+    <h5>Type: <span th:text="${community.type}"/></h5>
+    <hr/>
+    <br/>
 </div>
-<a th:href="@{/logout}">Logout</a>
+<form action="@{/home}" method="POST">
+    <input type="submit" value="Home">
+</form>
+<form th:action="@{/logout}" method="POST">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>

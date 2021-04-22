@@ -2,6 +2,7 @@ package com.example.ComUnity.Domain;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,8 @@ public class Member implements UserDetails {
     private String email;
     private Date joiningDate;
 
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     private List<Post> posts = new ArrayList<>();
 
     /*@ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)

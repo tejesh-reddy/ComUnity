@@ -2,6 +2,7 @@ package com.example.ComUnity.Domain;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
@@ -29,36 +30,48 @@ public class Community {
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
     Set<Post> posts = new HashSet<>();
 
-    /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "community_member",
     joinColumns = {
-            @JoinColumn(name = "username", referencedColumnName = "username",
+            @JoinColumn(name = "community", referencedColumnName = "name",
     nullable = false, updatable = false)
     },
     inverseJoinColumns = {
-            @JoinColumn(name = "community", referencedColumnName = "name",
+            @JoinColumn(name = "username", referencedColumnName = "username",
             nullable = false, updatable = false)
     })
-    private Set<Member> members = new HashSet<>();*/
+    @EqualsAndHashCode.Exclude
+    private Set<Member> members = new HashSet<>();
 
 
     /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "community_moderator",
     joinColumns = {
-            @JoinColumn(name = "username", referencedColumnName = "username",
+            @JoinColumn(name = "community", referencedColumnName = "name",
     nullable = false, updatable = false)
     },
     inverseJoinColumns = {
-            @JoinColumn(name = "community", referencedColumnName = "name",
+            @JoinColumn(name = "username", referencedColumnName = "username",
             nullable = false, updatable = false)
     })
     private Set<Member> moderators = new HashSet<>();*/
 
-    public Community(String name, String description, Type type)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sheriff")
+    private Member sheriff;
+
+
+    public Community(String name, String description, Type type, Member sheriff)
     {
         this.name = name;
         this.description = description;
         this.type = type;
+        this.sheriff = sheriff;
+    }
+
+    public void addMember(Member member)
+    {
+        members.add(member);
     }
 
 

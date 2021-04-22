@@ -1,6 +1,7 @@
 package com.example.ComUnity.Service;
 
 import com.example.ComUnity.Dao.MemberDao;
+import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,13 @@ public class MemberDetailsService implements UserDetailsService {
             return member.get().getPosts();
 
         return null;
+    }
+
+    @Transactional
+    public void addCommunity(String username, Community community)
+    {
+        Member member = getByUsername(username);
+
+        member.addMembership(community);
     }
 }

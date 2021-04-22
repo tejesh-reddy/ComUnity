@@ -10,7 +10,7 @@
 <br/>
 
 <div th:each="community : ${communities}">
-    <h3>Name: <span th:text="${community.name}"/></h3>
+    <h3>Name: <a th:href="@{'/com/' + ${community.name}}">/com/<span th:text="${community.name}"/></a></h3>
     <h4>Description: <span th:text="${community.description}"/></h4>
     <h5>Type: <span th:text="${community.type}"/></h5>
     <hr/>

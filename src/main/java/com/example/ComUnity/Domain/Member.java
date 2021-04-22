@@ -30,11 +30,13 @@ public class Member implements UserDetails {
     @EqualsAndHashCode.Exclude
     private List<Post> posts = new ArrayList<>();
 
-    /*@ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
-    Set<Community> communities = new HashSet<>();*/
+    @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    Set<Community> communities = new HashSet<>();
 
-    /*@ManyToMany(mappedBy = "moderators", fetch = FetchType.LAZY)
-    Set<Community> moderatorOf = new HashSet<>();*/
+    @OneToOne(mappedBy = "sheriff", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    Community sheriffOf;
 
     public Member(String username, String password, String email)
     {
@@ -47,6 +49,11 @@ public class Member implements UserDetails {
     public void addPost(Post post)
     {
         posts.add(post);
+    }
+
+    public void addMembership(Community community)
+    {
+        communities.add(community);
     }
 
 

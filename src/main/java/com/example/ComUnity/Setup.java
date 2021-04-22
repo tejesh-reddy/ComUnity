@@ -38,8 +38,8 @@ public class Setup {
 
         ArrayList<Community> communities = new ArrayList<>();
 
-        communities.add(new Community("News", "A community dedicated to journalism", Community.Type.PUBLIC));
-        communities.add(new Community("Funny", "A good laugh is worth joking for", Community.Type.PUBLIC));
+        communities.add(new Community("News", "A community dedicated to journalism", Community.Type.PUBLIC, members.get(1)));
+        communities.add(new Community("Funny", "A good laugh is worth joking for", Community.Type.PUBLIC, members.get(0)));
 
 
         ArrayList<Post> posts = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.example.ComUnity.Service;
 
 import com.example.ComUnity.Dao.CommunityDao;
+import com.example.ComUnity.Domain.Access;
 import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Domain.Post;
@@ -17,6 +18,10 @@ public class CommunityService {
 
     @Autowired
     CommunityDao communityDao;
+
+    @Autowired
+    MemberDetailsService memberService;
+
 
     public List<Community> getAll()
     {
@@ -37,6 +42,48 @@ public class CommunityService {
             return community.get().getPosts();
 
         return null;
+    }
+
+    @Transactional
+    public Access getAccess(String communityName, String username)
+    {
+        Community community = getByName(communityName);
+        Access access = new Access();
+
+
+        if(community.getSheriff().getUsername().equals(username)){
+            access.setSheriff(true);
+            access.setJoin_access(false);
+            access.setPost_access(true);
+            return access;
+        }
+        for(Member member : community.getMembers()) {
+            if (member.getUsername().equals(username)) {
+                access.setPost_access(true);
+                access.setJoin_access(false);
+                return access;
+            }
+        }
+
+
+        // Default
+        access.setJoin_access(true);
+        access.setPost_access(false);
+        access.setSheriff(false);
+
+        return access;
+    }
+
+    public void addMember(String communityName, Member member)
+    {
+        String username = member.getUsername();
+        Access access = getAccess(communityName, username);
+
+        if(access.isJoin_access()) {
+            Community community = getByName(communityName);
+            community.addMember(member);
+            memberService.addCommunity(username, community);
+        }
     }
 
 }

@@ -11,15 +11,27 @@
 
 <h1 th:text="${community.name}"></h1>
 <h2 th:text="${community.description}"></h2>
+<h2>Created By /mem/<span th:text="${community.sheriff.username}"/></h2>
 <hr/><br>
 
-<h2>Posts: </h2>
+<div th:if="${access.post_access}">
+  <a th:href="@{/post}">Add post</a>
+</div>
+<div th:if="${access.join_access}">
+  <a th:href="@{${community.name} + '/join'}">Join</a>
+</div>
+<div th:if="${access.sheriff}">
+  <a th:href="@{/monitor}">Monitor</a>
+</div>
+
+<h3>Posts: </h3>
 <div th:each="post : ${posts}">
-  <h3 th:text="${post.title}">Title</h3>
-  <h5 th:text="${post.content}">Content</h5>
+  <h4 th:text="${post.title}">Title</h4>
+  <h4 th:text="${post.content}">Content</h4>
   <h5>Posted by /mem/<span th:text="${post.author.username}"/></h5>
   <br/><hr/>
 </div>
+
 
 <br><hr/>
 

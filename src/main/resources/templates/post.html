@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <title>Post</title>
+  <style>
+    .error{
+      color:red;
+      }
+  </style>
+</head>
+<body>
+<h1>Posting to <span th:text="${community}"/></h1>
+<hr/>
+
+<p th:if="${param.error}">Bad Post</p>
+
+<form method="POST" th:action="@{'/com/' + ${community} + '/post'}" th:object="${postForm}">
+  <input type="text" name="username" placeholder="Title" th:field="*{title}"/>
+  <span th:if="${#fields.hasErrors('title')}"
+        th:class="error"
+        th:errors = "*{title}">Error</span>
+  <br/>
+  <textarea rows="200" cols="100" name="content" placeholder="Content Goes here" th:field="*{content}"></textarea>
+  <span th:if="${#fields.hasErrors('content')}"
+        th:class="error"
+        th:errors = "*{content}">Error</span>
+  <br/>
+  <input type="submit" name="submit" value="Submit">
+</form>
+
+</body>
+</html>

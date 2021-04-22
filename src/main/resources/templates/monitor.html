@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+  <title>Monitor Community</title>
+</head>
+<body>
+<h1>Howdy Sherif <span th:text="${sheriff}"/>!</h1>
+<h2>You can monitor <a th:href="@{'/com/' + ${community}}" >/com/<span th:text="${community}"/></a> here</h2>
+
+<hr/>
+<br/>
+
+<div th:each="member : ${members}">
+  <h3>Name: <a th:href="@{'/mem/' + ${member.username}}">/mem/<span th:text="${member.username}"/></a></h3>
+  <h3>Email: <span th:text="${member.email}"/> </h3>
+  <form th:action="@{'/com/' + ${community} + '/remove/' + ${member.username}}">
+    <input type="submit" value="remove">
+  </form>
+  <br/>
+</div>
+<form th:action="@{/}" method="POST">
+  <input type="submit" value="Home">
+</form>
+<form th:action="@{/logout}" method="POST">
+  <input type="submit" value="Logout">
+</form>
+</body>
+</html>

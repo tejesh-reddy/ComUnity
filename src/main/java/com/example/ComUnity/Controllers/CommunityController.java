@@ -1,17 +1,21 @@
 package com.example.ComUnity.Controllers;
 
 
+import com.example.ComUnity.DTO.PostForm;
 import com.example.ComUnity.Domain.Access;
 import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Service.CommunityService;
+import com.example.ComUnity.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/com")
@@ -19,6 +23,9 @@ public class CommunityController {
 
     @Autowired
     CommunityService communityService;
+
+    @Autowired
+    PostService postService;
 
     @GetMapping
     public String showAll(Model model)
@@ -53,6 +60,55 @@ public class CommunityController {
         communityService.addMember(name, member);
 
         System.out.println("redirect:/com/" + name);
+
+        return "redirect:/com/" + name;
+    }
+
+    @GetMapping("/{name}/monitor")
+    public String monitor(@PathVariable String name, @AuthenticationPrincipal Member member, Model model)
+    {
+        Access access = communityService.getAccess(name, member.getUsername());
+
+        if(access.isSheriff()){
+            model.addAttribute("members", communityService.getByName(name).getMembers());
+
+            model.addAttribute("sheriff", member.getUsername());
+
+            model.addAttribute("community", name);
+
+            return "monitor";
+        }
+
+        return "redirect:/forbidden";
+    }
+
+    @GetMapping("/{name}/post")
+    public String post(@PathVariable String name, @AuthenticationPrincipal Member member, Model model)
+    {
+        Access access = communityService.getAccess(name, member.getUsername());
+
+        if(access.isPost_access()){
+
+            model.addAttribute("community", name);
+
+            model.addAttribute("postForm", new PostForm());
+
+            return "post";
+        }
+
+        return "redirect:/forbidden";
+    }
+
+    @PostMapping("/{name}/post")
+    public String post(@PathVariable String name, @AuthenticationPrincipal Member member, @Valid @ModelAttribute PostForm postForm,
+                       Errors errors)
+    {
+        if(errors.hasErrors())
+            return "/com/" + name + "/post";
+
+        Community community = communityService.getByName(name);
+
+        postService.savePost(postForm, community, member);
 
         return "redirect:/com/" + name;
     }

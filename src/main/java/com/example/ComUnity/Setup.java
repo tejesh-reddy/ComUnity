@@ -56,6 +56,8 @@ public class Setup {
         communities.get(1).addPost(posts.get(1));
         communities.get(1).addPost(posts.get(2));
 
+        communities.get(1).addMember(members.get(2));
+
         for(Member member : members)
         {
             memberDao.save(member);

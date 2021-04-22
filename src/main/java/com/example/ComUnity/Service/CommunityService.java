@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -44,46 +45,11 @@ public class CommunityService {
         return null;
     }
 
+
     @Transactional
-    public Access getAccess(String communityName, String username)
-    {
-        Community community = getByName(communityName);
-        Access access = new Access();
-
-
-        if(community.getSheriff().getUsername().equals(username)){
-            access.setSheriff(true);
-            access.setJoin_access(false);
-            access.setPost_access(true);
-            return access;
-        }
-        for(Member member : community.getMembers()) {
-            if (member.getUsername().equals(username)) {
-                access.setPost_access(true);
-                access.setJoin_access(false);
-                return access;
-            }
-        }
-
-
-        // Default
-        access.setJoin_access(true);
-        access.setPost_access(false);
-        access.setSheriff(false);
-
-        return access;
+    public void save(Community community){
+        communityDao.save(community);
     }
 
-    public void addMember(String communityName, Member member)
-    {
-        String username = member.getUsername();
-        Access access = getAccess(communityName, username);
-
-        if(access.isJoin_access()) {
-            Community community = getByName(communityName);
-            community.addMember(member);
-            memberService.addCommunity(username, community);
-        }
-    }
 
 }

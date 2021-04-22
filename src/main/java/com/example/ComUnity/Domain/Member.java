@@ -22,8 +22,11 @@ public class Member implements UserDetails {
     @Column(name = "username")
     private final String username;
 
+    @EqualsAndHashCode.Exclude
     private String password;
+    @EqualsAndHashCode.Exclude
     private String email;
+    @EqualsAndHashCode.Exclude
     private Date joiningDate;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
@@ -85,5 +88,9 @@ public class Member implements UserDetails {
     public String toString()
     {
         return "Member: " + username + " @ " + email;
+    }
+
+    public void removeCommunity(Community community) {
+        communities.remove(community);
     }
 }

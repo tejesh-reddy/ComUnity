@@ -14,12 +14,12 @@
 <div th:each="member : ${members}">
   <h3>Name: <a th:href="@{'/mem/' + ${member.username}}">/mem/<span th:text="${member.username}"/></a></h3>
   <h3>Email: <span th:text="${member.email}"/> </h3>
-  <form th:action="@{'/com/' + ${community} + '/remove/' + ${member.username}}">
+  <form method="POST" th:action="@{'/com/' + ${community} + '/remove/' + ${member.username}}">
     <input type="submit" value="remove">
   </form>
-  <br/>
+  <hr/><br/>
 </div>
-<form th:action="@{/}" method="POST">
+<form th:action="@{/}" method="GET">
   <input type="submit" value="Home">
 </form>
 <form th:action="@{/logout}" method="POST">

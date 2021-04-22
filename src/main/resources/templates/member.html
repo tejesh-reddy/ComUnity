@@ -2,21 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-  <title>Home</title>
+    <title>Member</title>
 </head>
 <body>
-<hr/>
-<br/>
 
-<div th:each="member : ${members}">
-  <h1>Name: <span th:text="${member.username}"/></h1>
-  <h3>Bio: <span th:text="${member.email}"/> </h3>
-</div>
+<h1>Name: <span th:text="${member.username}"/></h1>
+<hr/>
+<h3>Bio: <span th:text="${member.email}"/> </h3>
+<h4>Joined on <span th:text="${member.joiningDate}"/></h4>
 <form th:action="@{/}" method="GET">
-  <input type="submit" value="Home">
+    <input type="submit" value="Home">
 </form>
 <form th:action="@{/logout}" method="POST">
-  <input type="submit" value="Logout">
+    <input type="submit" value="Logout">
 </form>
 </body>
 </html>

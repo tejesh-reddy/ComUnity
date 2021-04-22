@@ -15,13 +15,13 @@
 <hr/><br>
 
 <div th:if="${access.post_access}">
-  <a th:href="@{${community.name} + '/post'}">Add post</a>
+  <a th:href="@{'/com/' + ${community.name} + '/post'}">Add post</a>
 </div>
 <div th:if="${access.join_access}">
-  <a th:href="@{${community.name} + '/join'}">Join</a>
+  <a th:href="@{'/com/' + ${community.name} + '/join'}">Join</a>
 </div>
 <div th:if="${access.sheriff}">
-  <a th:href="@{${community.name} + '/monitor'}">Monitor</a>
+  <a th:href="@{'/com/' + ${community.name} + '/monitor'}">Monitor</a>
 </div>
 
 <h3>Posts: </h3>

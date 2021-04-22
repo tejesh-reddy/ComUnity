@@ -6,6 +6,7 @@ import com.example.ComUnity.Domain.Access;
 import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Service.CommunityService;
+import com.example.ComUnity.Service.MemberCommunityService;
 import com.example.ComUnity.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,6 +28,9 @@ public class CommunityController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    MemberCommunityService memberCommunityService;
+
     @GetMapping
     public String showAll(Model model)
     {
@@ -40,7 +44,7 @@ public class CommunityController {
     {
         Community community = communityService.getByName(name);
 
-        Access access = communityService.getAccess(name, member.getUsername());
+        Access access = memberCommunityService.getAccess(name, member.getUsername());
 
         model.addAttribute("community", community);
 
@@ -57,7 +61,7 @@ public class CommunityController {
     public String addToCommunity(@PathVariable String name, @AuthenticationPrincipal Member member)
     {
 
-        communityService.addMember(name, member);
+        memberCommunityService.addMember(name, member);
 
         System.out.println("redirect:/com/" + name);
 
@@ -67,7 +71,7 @@ public class CommunityController {
     @GetMapping("/{name}/monitor")
     public String monitor(@PathVariable String name, @AuthenticationPrincipal Member member, Model model)
     {
-        Access access = communityService.getAccess(name, member.getUsername());
+        Access access = memberCommunityService.getAccess(name, member.getUsername());
 
         if(access.isSheriff()){
             model.addAttribute("members", communityService.getByName(name).getMembers());
@@ -85,7 +89,7 @@ public class CommunityController {
     @GetMapping("/{name}/post")
     public String post(@PathVariable String name, @AuthenticationPrincipal Member member, Model model)
     {
-        Access access = communityService.getAccess(name, member.getUsername());
+        Access access = memberCommunityService.getAccess(name, member.getUsername());
 
         if(access.isPost_access()){
 
@@ -104,13 +108,25 @@ public class CommunityController {
                        Errors errors)
     {
         if(errors.hasErrors())
-            return "/com/" + name + "/post";
+            return "redirect:/com/" + name +"/post";
 
         Community community = communityService.getByName(name);
 
         postService.savePost(postForm, community, member);
 
         return "redirect:/com/" + name;
+    }
+
+    @PostMapping("/{comName}/remove/{username}")
+    public String removeUser(@PathVariable String comName, @PathVariable String username, @AuthenticationPrincipal Member member)
+    {
+
+        boolean deleted = memberCommunityService.removeMember(comName, username, member.getUsername());
+
+        if(deleted)
+            return "redirect:/com/" + comName + "/monitor";
+
+        return "redirect:/forbidden";
     }
 
 }

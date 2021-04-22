@@ -22,12 +22,20 @@ public class Community {
     @Column(name = "name")
     private String name;
 
+    @EqualsAndHashCode.Exclude
     private String description;
+    @EqualsAndHashCode.Exclude
     private Type type;
+
+
+    public void removeMember(Member member) {
+        members.remove(member);
+    }
 
     public enum Type {PUBLIC, INVITE_ONLY};
 
     @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
     Set<Post> posts = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -43,18 +51,6 @@ public class Community {
     @EqualsAndHashCode.Exclude
     private Set<Member> members = new HashSet<>();
 
-
-    /*@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "community_moderator",
-    joinColumns = {
-            @JoinColumn(name = "community", referencedColumnName = "name",
-    nullable = false, updatable = false)
-    },
-    inverseJoinColumns = {
-            @JoinColumn(name = "username", referencedColumnName = "username",
-            nullable = false, updatable = false)
-    })
-    private Set<Member> moderators = new HashSet<>();*/
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sheriff")

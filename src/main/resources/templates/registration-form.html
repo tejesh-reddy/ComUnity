@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Post</title>
+    <style>
+    .error{
+      color:red;
+      }
+  </style>
+</head>
+<body>
+<h1>New Registration - ComUnity is Open</h1>
+<hr/>
+
+<p class = "error" th:if="${param.taken}">Username Taken</p>
+
+<form method="POST" th:action="@{/register}" th:object="${registration}">
+    <input type="text" name="username" placeholder="Username (Unique)" th:field="*{username}"/>
+    <span th:if="${#fields.hasErrors('username')}"
+          th:class="error"
+          th:errors = "*{username}">Error</span>
+    <br/>
+    <input type="password" name="password" placeholder="*******" th:field="*{password}"/>
+    <span th:if="${#fields.hasErrors('password')}"
+          th:class="error"
+          th:errors = "*{password}">Error</span>
+    <br/>
+    <input type="text" name="email" placeholder="john.doe@email.org" th:field="*{email}"/>
+    <span th:if="${#fields.hasErrors('email')}"
+          th:class="error"
+          th:errors = "*{email}">Error</span>
+    <br/>
+
+    <input type="submit" name="submit" value="Register">
+</form>
+
+<form method="get" th:action="@{/}">
+    <input type="submit" value="Cancel">
+</form>
+
+</body>
+</html>

@@ -13,7 +13,6 @@
 <h1>Posting to <span th:text="${community}"/></h1>
 <hr/>
 
-<p th:if="${param.error}">Bad Post</p>
 
 <form method="POST" th:action="@{'/com/' + ${community} + '/post'}" th:object="${postForm}">
   <input type="text" name="username" placeholder="Title" th:field="*{title}"/>
@@ -21,12 +20,16 @@
         th:class="error"
         th:errors = "*{title}">Error</span>
   <br/>
-  <textarea rows="200" cols="100" name="content" placeholder="Content Goes here" th:field="*{content}"></textarea>
+  <textarea rows="25" cols="75" name="content" placeholder="Content Goes here" th:field="*{content}"></textarea>
   <span th:if="${#fields.hasErrors('content')}"
         th:class="error"
         th:errors = "*{content}">Error</span>
   <br/>
   <input type="submit" name="submit" value="Submit">
+</form>
+
+<form method="get" th:action="@{'/com/' + ${community}}">
+  <input type="submit" value="Cancel">
 </form>
 
 </body>

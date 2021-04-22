@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Home</title>
+</head>
+<body>
+<hr/>
+<br/>
+
+<div th:each="community : ${communities}">
+    <h1>Name: <span th:text="${community.name}"/></h1>
+    <h1>Description: <span th:text="${community.description}"/></h1>
+    <h1>Type: <span th:text="${community.type}"/></h1>
+</div>
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>

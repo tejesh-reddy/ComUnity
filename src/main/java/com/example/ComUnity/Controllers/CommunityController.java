@@ -1,6 +1,7 @@
 package com.example.ComUnity.Controllers;
 
 
+import com.example.ComUnity.DTO.CommunityForm;
 import com.example.ComUnity.DTO.PostForm;
 import com.example.ComUnity.Domain.Access;
 import com.example.ComUnity.Domain.Community;
@@ -10,7 +11,6 @@ import com.example.ComUnity.Service.MemberCommunityService;
 import com.example.ComUnity.Service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -52,7 +52,6 @@ public class CommunityController {
 
         model.addAttribute("access", access);
 
-        System.out.println("User: " + member + "\nAccess: " + access);
 
         return "show-community";
     }
@@ -128,5 +127,35 @@ public class CommunityController {
 
         return "redirect:/forbidden";
     }
+
+    @GetMapping("/new")
+    public String showForm(@AuthenticationPrincipal Member member, Model model)
+    {
+        CommunityForm communityForm = new CommunityForm();
+
+        model.addAttribute("registration", communityForm);
+
+        boolean isSheriff = (member.getSheriffOf() != null);
+        model.addAttribute("isSheriff", isSheriff);
+
+        return "community-form";
+
+    }
+
+    @PostMapping("/new")
+    public String register(@AuthenticationPrincipal Member sheriff, @Valid @ModelAttribute("registration") CommunityForm communityForm, Errors errors)
+    {
+        if(errors.hasErrors())
+            return "registration-form";
+
+        if(communityService.hasName(communityForm.getName()))
+            return "redirect:/register?taken";
+
+        if(!communityService.register(communityForm, sheriff))
+            return "redirect:/forbidden";
+
+        return "redirect:/";
+    }
+
 
 }

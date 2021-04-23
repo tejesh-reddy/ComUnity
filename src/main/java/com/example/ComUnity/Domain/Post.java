@@ -1,6 +1,7 @@
 package com.example.ComUnity.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -22,11 +23,13 @@ public class Post {
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "username", nullable = false)
+    @JsonBackReference
     private final Member author;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "community_name", nullable = false)
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     private final Community community;
 
     public Post(Member member, Community community)

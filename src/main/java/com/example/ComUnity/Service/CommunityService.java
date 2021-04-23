@@ -1,11 +1,14 @@
 package com.example.ComUnity.Service;
 
+import com.example.ComUnity.DTO.CommunityForm;
+import com.example.ComUnity.DTO.MemberRegistration;
 import com.example.ComUnity.Dao.CommunityDao;
 import com.example.ComUnity.Domain.Access;
 import com.example.ComUnity.Domain.Community;
 import com.example.ComUnity.Domain.Member;
 import com.example.ComUnity.Domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -52,4 +55,30 @@ public class CommunityService {
     }
 
 
+    public boolean hasName(String name) {
+
+        for(Community community : getAll())
+            if(community.getName().equals(name))
+                return true;
+
+        return false;
+
+    }
+
+    @Transactional
+    public boolean register(CommunityForm communityForm, Member sheriff) {
+
+        String name = communityForm.getName();
+
+        String description = communityForm.getDescription();
+
+        if(sheriff.getSheriffOf() != null)
+            return false;
+
+        Community community = new Community(name, description, Community.Type.PUBLIC, sheriff);
+
+        communityDao.save(community);
+
+        return true;
+    }
 }

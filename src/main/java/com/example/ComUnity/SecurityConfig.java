@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/setup").permitAll()
                 .antMatchers("/register").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
@@ -48,7 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling()
                     .accessDeniedPage("/forbidden")
 
-                .and().csrf();
+                .and()
+                    .csrf()
+                    .ignoringAntMatchers("/api/**");
     }
 
     @Bean

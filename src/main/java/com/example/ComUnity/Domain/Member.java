@@ -1,6 +1,8 @@
 package com.example.ComUnity.Domain;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,14 +33,17 @@ public class Member implements UserDetails {
 
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
+    @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
 
     @ManyToMany(mappedBy = "members", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     Set<Community> communities = new HashSet<>();
 
     @OneToOne(mappedBy = "sheriff", fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
+    @JsonBackReference
     Community sheriffOf;
 
     public Member(String username, String password, String email)

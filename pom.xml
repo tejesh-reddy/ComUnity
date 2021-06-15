@@ -15,8 +15,6 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-	</properties>
-	<properties>
   <sonar.projectKey>tejesh-reddy_ComUnity</sonar.projectKey>
   <sonar.organization>tejesh-reddy</sonar.organization>
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
